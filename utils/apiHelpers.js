@@ -26,7 +26,7 @@ module.exports = {
     const res = {
       status: false,
       message: "Validation errors",
-      detail: errors,
+      data: errors,
     };
     return res;
   },
