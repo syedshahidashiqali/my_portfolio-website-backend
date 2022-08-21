@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Shahid Portfolio</title>
+</head>
+
+<body>
+  <h1>Welcome Shahid Admin Portfolio</h1>
+  <div class="container">
+    <form method="post">
+      <input placeholder="Title" type="text" name="title" id="title" value="my title">
+      <input placeholder="Link" type="text" name="link" id="link" value="my link">
+      <input type="file" name="image" id="image">
+      <button type="submit">Submit</button>
+    </form>
+  </div>
+</body>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+  const fromEl = document.querySelector("form");
+  const titleEl = document.getElementById("title");
+  const linkEl = document.getElementById("link");
+  const imageEl = document.getElementById("image");
+
+  fromEl.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    var cloudinaryApiUrl = "https://api.cloudinary.com/v1_1/dcxcllw73/upload";
+
+    const imgFormData = new FormData();
+    imgFormData.append("file", e.target[2].files[0]);
+    imgFormData.append("upload_preset", "projects_uploads");
+
+    const { data } = await axios.post(cloudinaryApiUrl, imgFormData);
+    const { url } = data;
+
+    // my api
+    const { data: apiData } = await axios.post("http://localhost:5000/api/v1/projects", {
+      title: e.target[0].value,
+      link: e.target[1].value,
+      image: url
+    });
+    console.log(46, apiData);
+  });
+</script>
+
+</html>
